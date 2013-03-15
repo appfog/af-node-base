@@ -1,5 +1,10 @@
-var http = require('http');
-http.createServer(function (req, res) {
-  res.writeHead(200, {'Content-Type': 'text/html'});
-  res.end('Hello from <a href="http://appfog.com">AppFog.com</a>');
-}).listen(process.env.VMC_APP_PORT || 1337, null);
+var diegoio=require("socket.io").listen(6969);
+diegoio.sockets.on("connection",arranque);
+
+ function arranque(usuario){
+   usuario.on("nuevoNombre",emitir);
+ }
+
+ function emitir(data){
+ 	diegoio.sockets.emit("nombreDesdeServidor",data+"*");
+ }
