@@ -1,0 +1,66 @@
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+	<title>node notifications</title>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js">
+	</script>
+	<script src="http://localhost:6969/socket.io/socket.io.js"></script> 
+
+ <style>
+ body{
+     color:#333; 
+ 	background:#333;
+ 	font-size: 32px;
+ 	font-family: "Helvetica",Arial;
+ 	text-align: center;
+    }
+ form
+ {
+ 	background: #CCC;
+ 	border-radius: 1em;
+ 	box-shadow:0px 5px 5px 5px;
+ 	text-shadow:5px 5px 5px 5px;
+ 	margin 1em auto;
+ 	width: 40%;
+ 	padding: 1em;
+ }
+ form input
+ {
+ 	display: block;
+ 	font-size: 40px;
+ 	margin 1em auto;
+ 	padding: 0.5em;
+ 	width: 70%;
+ }   
+ </style>
+ <script>
+$(document).on("ready",iniciar);
+
+function iniciar()
+{	
+	var websocket=io.connect("http://localhost:6969");
+	websocket.on("nombreDesdeServidor",recibirMensaje);
+	$("#formulario").submit(enviarMensaje);
+}
+
+function enviarMensaje(){
+	
+	websocket.emit("nuevoNombre",$("#nombre").val());
+	$("#nombre").fadeOut();
+}
+
+function recibirMensaje(datosServidor){
+$("#formulario label").text("Acaba de entrar"+datosServidor);
+}
+</script>
+</head>
+
+<body>
+	<form id="formulario">
+		<label>como te llamas</label>
+		<input type="text" id="nombre"
+		placeholder="Tu nombre completo"
+		required />
+	</form>	 
+</body>
+</html>
